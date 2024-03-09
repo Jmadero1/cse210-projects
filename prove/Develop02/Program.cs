@@ -4,23 +4,28 @@ using System.Collections.Generic;
 // Represents an entry in the journal
 public class Entry
 {
-    // Properties prompt, response, and date of the entry
+    // Properties for prompt, response, date, tags, and mood of the entry
     public string Prompt { get; set; }
     public string Response { get; set; }
     public DateTime Date { get; set; }
+    public List<string> Tags { get; set; }
+    public string Mood { get; set; }
 
-    // initialize the entry
-    public Entry(string prompt, string response, DateTime date)
+    // Constructor to initialize the entry
+    public Entry(string prompt, string response, DateTime date, List<string> tags, string mood)
     {
         Prompt = prompt;
         Response = response;
         Date = date;
+        Tags = tags;
+        Mood = mood;
     }
 
     // Override ToString method to display the entry in a specific format
     public override string ToString()
     {
-        return $"{Date.ToString("dd/MM/yyyy")} - {Prompt}: {Response}";
+        string tagsStr = string.Join(", ", Tags);
+        return $"{Date.ToString("dd/MM/yyyy")} - {Prompt}: {Response}\nTags: {tagsStr}\nMood: {Mood}\n";
     }
 }
 
@@ -30,9 +35,9 @@ public class Journal
     private List<Entry> entries = new List<Entry>();
 
     // Method to add a new entry to the journal
-    public void AddEntry(string prompt, string response, DateTime date)
+    public void AddEntry(string prompt, string response, DateTime date, List<string> tags, string mood)
     {
-        entries.Add(new Entry(prompt, response, date));
+        entries.Add(new Entry(prompt, response, date, tags, mood));
     }
 
     // Method to display all entries in the journal
@@ -56,7 +61,7 @@ public class Journal
     {
         try
         {
-            // Code to save entries to a file
+            //  save entries to a file (CSV or JSON)
             Console.WriteLine("Journal saved to file successfully.");
         }
         catch (Exception ex)
@@ -70,7 +75,7 @@ public class Journal
     {
         try
         {
-            // Code to load entries from a file
+            //  (CSV or JSON)
             Console.WriteLine("Journal loaded from file successfully.");
         }
         catch (Exception ex)
@@ -86,7 +91,7 @@ public class Menu
     // Static method to display the menu options
     public static void ShowMenu()
     {
-        Console.WriteLine("1. Write ");
+        Console.WriteLine("1. Write a new entry");
         Console.WriteLine("2. Display the journal");
         Console.WriteLine("3. Save the journal to a file");
         Console.WriteLine("4. Load the journal from a file");
@@ -122,7 +127,11 @@ class Program
                         string prompt = Console.ReadLine();
                         Console.Write("Enter response: ");
                         string response = Console.ReadLine();
-                        journal.AddEntry(prompt, response, DateTime.Now);
+                        Console.Write("Enter tags (comma-separated): ");
+                        List<string> tags = new List<string>(Console.ReadLine().Split(','));
+                        Console.Write("Enter mood: ");
+                        string mood = Console.ReadLine();
+                        journal.AddEntry(prompt, response, DateTime.Now, tags, mood);
                         break;
 
                     case 2:
