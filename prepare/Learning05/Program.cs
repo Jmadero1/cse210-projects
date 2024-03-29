@@ -1,9 +1,27 @@
+// Program.cs
 using System;
+using System.Collections.Generic;
+using Learning05.Models; 
 
-class Program
+namespace Learning05
 {
-    static void Main(string[] args)
+    public class Program
     {
-        Console.WriteLine("Hello Learning05 World!");
+        public static void Main(string[] args)
+        {
+            List<Shape> shapes = new List<Shape>();
+
+            
+            shapes.Add(new Square("white", 5));
+            shapes.Add(new Rectangle("Black", 4, 6));
+            shapes.Add(new Circle("blue", 3));
+
+            
+            foreach (Shape shape in shapes)
+            {
+                
+                Console.WriteLine($"Color: {shape.GetColor()}, Área: {shape.GetArea()}");
+            }
+        }
     }
 }
